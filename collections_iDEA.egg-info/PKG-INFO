@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: collections-iDEA
+Version: 0.0.1
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: Benjamin Mason
+Author-email: benwalshe.mason@outlook.com
+License: UNKNOWN
+Keywords: python
+Platform: UNKNOWN
+
+Python package to help analyse collections of states in iDEA
+

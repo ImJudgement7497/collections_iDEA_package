@@ -1,0 +1,9 @@
+setup.py
+collections_iDEA/Collections.py
+collections_iDEA/__init__.py
+collections_iDEA/multiplets.py
+collections_iDEA.egg-info/PKG-INFO
+collections_iDEA.egg-info/SOURCES.txt
+collections_iDEA.egg-info/dependency_links.txt
+collections_iDEA.egg-info/requires.txt
+collections_iDEA.egg-info/top_level.txt
