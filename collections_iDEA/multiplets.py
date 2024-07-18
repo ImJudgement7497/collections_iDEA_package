@@ -64,7 +64,7 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
 
     Args:
 
-    | energy_method: function, The analytic energy of state k
+    | energy_method: function, The analytic energy of state k (can only depend on the index)
     | s: iDEA.system.System, The system (only needed for up_count, down_count)
     | max_k: int, Maximum state k considered
     | max_index: int, Maximmum index for indices list (can access upto (max_indes)^2 states), defaulted to 20
@@ -84,8 +84,19 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
     indices = np.array(indices).reshape(-1, 2)  
 
     if s.up_count == 2 or s.down_count == 2:
-        mask = indices[:, 0] != indices[:, 1]
-        indices = indices[mask]
+        mask_1 = indices[:, 0] != indices[:, 1]
+        indices = indices[mask_1]
+        mask_2 = np.ones(len(indices), dtype=bool)
+
+        seen_pairs = set()
+
+        for i, pair in enumerate(indices):
+            sorted_pair = tuple(sorted(pair))
+            if sorted_pair in seen_pairs:
+                mask_2[i] = False
+            else:
+                seen_pairs.add(sorted_pair)
+        indices = indices[mask_2]
 
     
     # Extract up and down indices

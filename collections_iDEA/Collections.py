@@ -9,7 +9,7 @@ class CollectionOfStates():
     | states: np.ndarray, Array of states, indexed as states[k], for k excited state
     | up_indices: np.ndarray, Array of the index of up occupied orbitals, indexed as up_indices[k]
     | down_indices: np.ndarray, Array of the index of down occupied orbitals, indexed as down_indices[k]
-    | energies: np.ndarray, Array of analytical energies of each state, indexed as energies[k]
+    | energies: np.ndarray, Array of energies of each state, indexed as energies[k]
     | multiplets: list, List of states that are multiplets
     | multiplets_energies: List, Energies of the corresponding multiplets
     | states_classes: list, List of class objects of each state, indexed as states_classes[k]
