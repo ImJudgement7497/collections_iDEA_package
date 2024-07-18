@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.2' 
+VERSION = '0.0.3' 
 DESCRIPTION = ''
 LONG_DESCRIPTION = 'Python package to help analyse collections of states in iDEA'
 

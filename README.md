@@ -1,6 +1,6 @@
 # collections_iDEA_package
 
-To install, clone this repository then run `pip install .` in the directory.
+To install, first fork this repository, then clone then run `pip install .` in the directory.
 
 # Motivation
 
@@ -37,15 +37,18 @@ def qho_energy(index):
     return omega*(index+0.5)
 
 analytic_collection = collections_iDEA.multiplets.apply_energy_method(qho_energy, qho_double, 50)
-collections_iDEA.multiplets.calculate_multiplets(analytic_collection)
+analytic_collection.calculate_multiplets()
 print(analytic_collection.multiplets)
 ```
 
 # Possible issues
 
+- It is unclear if iDEA gives states that are distingushable or indistingushable for the `interacting` method on systems such as `uu`. 
+- Due to the nature of `np.argsort()`, the indices may not exactly match iDEA's outputs when considering multiplets, but the correct indices will still be given, just in a slightly different order to iDEA.
 
 
 
 # Possible developments
 
 Change `apply_energy_method` so that you can pass it a CollectionOfStates, but by default it gives you one.
+Change the defintionS of CollectionOFStates so it can be used as a general collection, not just analytic. 

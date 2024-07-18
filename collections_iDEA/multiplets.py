@@ -58,7 +58,7 @@ def create_indices(max_level: int):
     return indices
 
 
-def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_index=20) -> CollectionOfStates:
+def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, states=None, max_index=20, second_mask=True) -> CollectionOfStates:
     r"""
     Calculate the energy of non-interacting states and the occupation of each state
 
@@ -67,7 +67,9 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
     | energy_method: function, The analytic energy of state k (can only depend on the index)
     | s: iDEA.system.System, The system (only needed for up_count, down_count)
     | max_k: int, Maximum state k considered
+    | states: CollectionOfStates, A pre-defined collection (defaulted to None as function will create one)
     | max_index: int, Maximmum index for indices list (can access upto (max_indes)^2 states), defaulted to 20
+    | second_mask: bool, Apply second mask to remove reverse indices like [1, 0], [0, 1] (one of these will be removed). See Possible Issues in README.md
 
     Returns:
 
@@ -78,7 +80,8 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
     if (max_index)**2 < max_k:
         raise AssertionError(f"Only {max_index**2} states will be accessed, please decrease the number of states from {max_k} or increase the max index {max_index}")
 
-    states = CollectionOfStates(max_k)
+    if states == None:
+        states = CollectionOfStates(max_k)
     
     indices = create_indices(max_index)
     indices = np.array(indices).reshape(-1, 2)  
@@ -86,17 +89,19 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
     if s.up_count == 2 or s.down_count == 2:
         mask_1 = indices[:, 0] != indices[:, 1]
         indices = indices[mask_1]
-        mask_2 = np.ones(len(indices), dtype=bool)
 
-        seen_pairs = set()
+        if second_mask:
+            mask_2 = np.ones(len(indices), dtype=bool)
 
-        for i, pair in enumerate(indices):
-            sorted_pair = tuple(sorted(pair))
-            if sorted_pair in seen_pairs:
-                mask_2[i] = False
-            else:
-                seen_pairs.add(sorted_pair)
-        indices = indices[mask_2]
+            seen_pairs = set()
+
+            for i, pair in enumerate(indices):
+                sorted_pair = tuple(sorted(pair))
+                if sorted_pair in seen_pairs:
+                    mask_2[i] = False
+                else:
+                    seen_pairs.add(sorted_pair)
+            indices = indices[mask_2]
 
     
     # Extract up and down indices
@@ -111,15 +116,6 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
     # Sort and select top k energies
     energy_indices = np.argsort(energies, kind='stable')[:max_k]
     
-    # # Create summary DataFrame
-    # summary = np.zeros((max_k, 3))
-    # summary[:, 0] = up_indices[energy_indices]
-    # summary[:, 1] = down_indices[energy_indices]
-    # summary[:, 2] = energies[energy_indices]
-    
-    # df = pd.DataFrame(summary, columns=["Up index", "Down index", "Energy"])
-    
-    # print(df)
     states.states = np.arange(max_k)
     states.up_indices = up_indices[energy_indices]
     states.down_indices = down_indices[energy_indices]
@@ -130,32 +126,32 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, max_in
 
     return states
 
-def calculate_multiplets(states: CollectionOfStates, tol=1e-12):
+# def calculate_multiplets(states: CollectionOfStates, tol=1e-12):
 
-    states.multiplets = []
+#     states.multiplets = []
 
-    energies_int = states.energies
-    j = 0
+#     energies_int = states.energies
+#     j = 0
 
-    while j < len(energies_int):
-        multiplet = []
-        if j > 0 and np.abs(energies_int[j] - energies_int[j-1]) <= tol:
-            # states.addMultiplet(j-1)
-            # states.addMultiplet(j)
-            states.add_multiplet_energy(energies_int[j])
-            multiplet.append(j-1)
-            multiplet.append(j)
-            i = j + 1
-            while i < len(energies_int):
-                if np.abs(energies_int[i] - energies_int[i-1]) <= tol:
-                    # states.addMultiplet(i)
-                    multiplet.append(i)
-                    i += 1
-                else:
-                    states.add_multiplet(multiplet)
-                    break
-            j = i 
-        else:
-            j += 1
+#     while j < len(energies_int):
+#         multiplet = []
+#         if j > 0 and np.abs(energies_int[j] - energies_int[j-1]) <= tol:
+#             # states.addMultiplet(j-1)
+#             # states.addMultiplet(j)
+#             states.add_multiplet_energy(energies_int[j])
+#             multiplet.append(j-1)
+#             multiplet.append(j)
+#             i = j + 1
+#             while i < len(energies_int):
+#                 if np.abs(energies_int[i] - energies_int[i-1]) <= tol:
+#                     # states.addMultiplet(i)
+#                     multiplet.append(i)
+#                     i += 1
+#                 else:
+#                     states.add_multiplet(multiplet)
+#                     break
+#             j = i 
+#         else:
+#             j += 1
     
-    return states
+#     return states
