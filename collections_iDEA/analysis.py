@@ -5,62 +5,8 @@ import ipywidgets as widgets
 from IPython.display import display
 from .Collections import CollectionOfStates
 from .multiplets import *
-
 import os
 
-# def states_density_comparison(states: dict, s: iDEA.system.System, analytic_prob_densities: list, widget=True):
-#     r"""
-#     Compare analytical probability densities to states from iDEA
-
-#     Args:
-
-#     | states: dict, Dictonary of states from iDEA (usually load states into a dictionary)
-#     | s: iDEA.system.System, System
-#     | analytic_prob_densities: list, List of analytical probability densities indexed as analytic_space[k] for k excited state
-#     | widget=True, Display a widget plot of the states if True, or save all frames to a directory
-
-#     Note for two non-interacting states, the analytic prob density is the sum of the single body probability densities
-
-#     Returns:
-
-#     Either displays a widget of the frames of each excited state or saves them all to a directory
-
-#     """
-#     x = s.x
-#     orbital_space = []
-
-#     for key, value in states.items():
-#         n = iDEA.observables.density(s, value)        
-#         orbital_space.append(n)
-
-#     # Ensure the directory for saving images exists
-#     output_dir = 'frames'
-#     if not os.path.exists(output_dir):
-#         os.makedirs(output_dir)
-#     # Define the function to plot the array
-#     def plot_array(k):
-#         plt.figure(figsize=(10, 6))
-#         plt.plot(x, orbital_space[k], "black")
-#         plt.plot(x, analytic_prob_densities[k], "b--")
-#         plt.title(f'State {k}')
-#         plt.xlabel('x')
-#         plt.ylabel('y')
-#         plt.grid(True)
-#         plt.legend(["Approximate prob. density", "Analytical prob. density"])
-#         plt.savefig(os.path.join(output_dir, f'fk_{k:03d}.png'))
-#         plt.show()
-    
-#     if widget:
-#         # Create a slider widget
-#         slider = widgets.IntSlider(value=0, min=0, max=len(orbital_space) - 1, step=1, description='k:')
-#         interactive_plot = widgets.interactive(plot_array, k=slider)
-        
-#         # Display the interactive plot
-#         display(interactive_plot)
-    
-#     else:
-#         for k in range(len(orbital_space)):
-#             plot_array(k)
 
 def states_density_comparison(states: CollectionOfStates, s: iDEA.system.System, analytic_prob_densities: list, widget=True):
     r"""
@@ -69,7 +15,7 @@ def states_density_comparison(states: CollectionOfStates, s: iDEA.system.System,
     Args:
 
     | states: CollectionOfStates, Collection of states from iDEA
-    | s: iDEA.system.System, System
+    | s: iDEA.system.System, System (only need the system's grid)
     | analytic_prob_densities: list, List of analytical probability densities indexed as analytic_space[k] for k excited state
     | widget=True, Display a widget plot of the states if True, or save all frames to a directory
 
@@ -159,8 +105,8 @@ def run_energy_comparison(analytic: CollectionOfStates, energies_list_1: list, e
     states_2 = CollectionOfStates(len(energies_list_2))
     states_2.energies = energies_list_2
 
-    calculate_multiplets(states_1, tol)
-    calculate_multiplets(states_2, tol)
+    states_1.calculate_multiplets(tol)
+    states_2.calculate_multiplets(tol)
     for i in range(len(states_1.multiplets)):
         print(f"From List 1: Multiplet: {states_1.multiplets[i]}, Energy: {states_1.multiplet_energies[i]}")
         print(f"From List 2: Multiplet: {states_2.multiplets[i]}, Energy: {states_2.multiplet_energies[i]}")

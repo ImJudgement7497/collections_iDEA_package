@@ -125,33 +125,3 @@ def apply_energy_method(energy_method, s: iDEA.system.System, max_k: int, states
     print(f"Elapsed Time = {end-start}")
 
     return states
-
-# def calculate_multiplets(states: CollectionOfStates, tol=1e-12):
-
-#     states.multiplets = []
-
-#     energies_int = states.energies
-#     j = 0
-
-#     while j < len(energies_int):
-#         multiplet = []
-#         if j > 0 and np.abs(energies_int[j] - energies_int[j-1]) <= tol:
-#             # states.addMultiplet(j-1)
-#             # states.addMultiplet(j)
-#             states.add_multiplet_energy(energies_int[j])
-#             multiplet.append(j-1)
-#             multiplet.append(j)
-#             i = j + 1
-#             while i < len(energies_int):
-#                 if np.abs(energies_int[i] - energies_int[i-1]) <= tol:
-#                     # states.addMultiplet(i)
-#                     multiplet.append(i)
-#                     i += 1
-#                 else:
-#                     states.add_multiplet(multiplet)
-#                     break
-#             j = i 
-#         else:
-#             j += 1
-    
-#     return states

@@ -50,5 +50,5 @@ print(analytic_collection.multiplets)
 
 # Possible developments
 
-Change `apply_energy_method` so that you can pass it a CollectionOfStates, but by default it gives you one.
-Change the defintionS of CollectionOFStates so it can be used as a general collection, not just analytic. 
+~~Change `apply_energy_method` so that you can pass it a CollectionOfStates, but by default it gives you one.~~
+~~Change the defintionS of CollectionOFStates so it can be used as a general collection, not just analytic.~~
