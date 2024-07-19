@@ -1,6 +1,6 @@
 # collections_iDEA_package
 
-To install, first fork this repository, then clone then run `pip install .` in the directory.
+To install, first clone this repoistory, then run `pip install .` in the directory.
 
 # Motivation
 
