@@ -4,15 +4,16 @@ To install, first fork this repository, then clone then run `pip install .` in t
 
 # Motivation
 
-During the course of my summer project I studied how multiplets are formed within the [INSERT LINK HERE] iDEA software. The analysis that I needed to do when calling `iDEA.methods.non_interacting.solve()` to solve non-interacting problems were slowed down due to how iDEA utilises its `get_occupation` function. When solving two body non interacting problems, the indexing of occupied orbitals are not system dependent i.e. for a `ud` configuration in an infinte square well the state indexed at [0, 0] is a valid state. This is the same for an `ud` configuration in the quantum harmonic oscillator. The energy of each single-body orbital will be system dependent.
+During the course of my summer project I studied how multiplets are formed within the [iDEA software](https://github.com/iDEA-org/iDEA). The analysis that I needed to do when calling `iDEA.methods.non_interacting.solve()` to solve non-interacting problems were slowed down due to how iDEA utilises its `get_occupation` function. When solving two body non interacting problems, the indexing of occupied orbitals are not system dependent i.e. for a `ud` configuration in an infinte square well the state indexed at [0, 0] is a valid state. This is the same for an `ud` configuration in the quantum harmonic oscillator. The energy of each single-body orbital will be system dependent.
 
 Thus instead of creating this indice list for every excited state (which gets more computationally expensive the higher excited state), `collections_iDEA.create_indices()` will create the list once for a `max_index` and saves it to file. This file is then utilised in other methods in the package to get the analysis I needed during the project. Doing this reduced the time of getting key information significantly.
 
 # Features
 
 - A central place to store many states at once.
-- Get key results like analytic energy and multiplets quickly for analytical systems.
-- Provides easy to use functions to compare energies and densities
+- Get key results like analytic energy and multiplets quickly for two-body analytical systems.
+- Provides easy to use functions to compare energies and densities.
+- Provides analytical wavefunctions for quantum harmonic oscillator and particle in a box.
 
 
 # Tutorial
@@ -52,3 +53,4 @@ print(analytic_collection.multiplets)
 
 ~~Change `apply_energy_method` so that you can pass it a CollectionOfStates, but by default it gives you one.~~
 ~~Change the defintionS of CollectionOFStates so it can be used as a general collection, not just analytic.~~
+Change `create_indices()` so that it will work for a more than two body system
